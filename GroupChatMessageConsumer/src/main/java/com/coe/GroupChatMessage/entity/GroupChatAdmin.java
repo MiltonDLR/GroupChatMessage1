@@ -1,6 +1,7 @@
 package com.coe.GroupChatMessage.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "group_chat_admin")
@@ -17,6 +18,9 @@ public class GroupChatAdmin {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_chat_id",referencedColumnName ="id", nullable = false)
     private GroupChat groupChatId;
+
+    @OneToMany
+    private List<GroupChatMessageEntity> groupChatMessage;
 
 
     //Constructor GroupChatAdmin

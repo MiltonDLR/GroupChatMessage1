@@ -5,47 +5,43 @@ import com.coe.kafkaproducer.model.GroupChatMessage;
 import javax.persistence.*;
 import java.util.Date;
 
-enum Status {Sent, Received, Seen, Error}
-
 @Entity
 @Table(name = "group_chat_message")
 public class GroupChatMessageEntity {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="group_chat_admin_id", referencedColumnName = "id", nullable = false)
-    private GroupChatAdmin groupChatAdminId;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="group_chat_admin_id")//, referencedColumnName = "id")
+    private int groupChatAdminId;
 
     @OneToOne
-    @JoinColumn(name = "chat_message_fk", referencedColumnName = "id", nullable = false)
-    private GroupChatMessageEntity ChatMessageFk;
+    @JoinColumn(name = "chat_message_fk", referencedColumnName = "id")
+    private GroupChatMessageEntity groupChatMessageId;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content")
     private String content;
 
-    @Column(name = "create_date", nullable = false)
+    @Column(name = "create_date")
     private Date createDate;
 
-    @Column(name = "status", columnDefinition = "ENUM('Sent, Received, Seen, Error')")
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private String status;
 
+    public GroupChatMessageEntity() {
+    }
 
     //Constructor Kafka Controller
     public GroupChatMessageEntity(GroupChatMessage groupChatMessage) {
         this.id = groupChatMessage.getId();
-        this.groupChatAdminId = new GroupChatAdmin(1,new Customer(),new GroupChat());
-        this.ChatMessageFk = this; //Buscar como declarar
+        this.groupChatAdminId = groupChatMessage.getGroupChatAdminId();
+        this.groupChatMessageId = groupChatMessage.getGroupChatMessageId();
         this.content = groupChatMessage.getContent();
         this.createDate = groupChatMessage.getCreateDate();
-        this.status = Status.Sent; //Buscar como declarar
-    }
-
-    public GroupChatMessageEntity() {
-
+        this.status = groupChatMessage.getStatus();
     }
 
     //Getters & Setters
@@ -53,27 +49,31 @@ public class GroupChatMessageEntity {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public GroupChatAdmin getGroupChatAdminId() {
+    public int getGroupChatAdminId() {
         return groupChatAdminId;
     }
-    public void setGroupChatAdminId(GroupChatAdmin groupChatAdminId) {
+
+    public void setGroupChatAdminId(int groupChatAdminId) {
         this.groupChatAdminId = groupChatAdminId;
     }
 
-    public GroupChatMessageEntity getChatMessageFk() {
-        return ChatMessageFk;
+    public GroupChatMessageEntity getGroupChatMessageId() {
+        return groupChatMessageId;
     }
-    public void setChatMessageFk(GroupChatMessageEntity chatMessageFk) {
-        ChatMessageFk = chatMessageFk;
+
+    public void setGroupChatMessageId(GroupChatMessageEntity groupChatMessageId) {
+        this.groupChatMessageId = groupChatMessageId;
     }
 
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
@@ -81,14 +81,32 @@ public class GroupChatMessageEntity {
     public Date getCreateDate() {
         return createDate;
     }
+
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
-    public void setStatus(Status status) {
+
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupChatMessageEntity{" +
+                "id=" + id +
+                ", groupChatAdminId=" + groupChatAdminId +
+                ", groupChatMessageId=" + groupChatMessageId +
+                ", content='" + content + '\'' +
+                ", createDate=" + createDate +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+    public void updateEntity(GroupChatMessage groupChatMessage){
+        this.content = groupChatMessage.getContent();
     }
 }

@@ -1,4 +1,4 @@
-package com.coe.GroupChatMessageProducer.model;
+package com.coe.GroupChatMessageProducer.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

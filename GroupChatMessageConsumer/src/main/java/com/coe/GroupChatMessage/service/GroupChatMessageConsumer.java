@@ -16,11 +16,16 @@ public class GroupChatMessageConsumer {
     @Autowired
     private GroupChatMessageRepository groupChatMessageRepository;
 
-    @KafkaListener(topics = "save_group_message", groupId = "group_json")
+    @KafkaListener(topics = "group-chat-message-save-topic", groupId = "group_json")
     public void saveGroupChatMessage(ConsumerRecord<Long, GroupChatMessage> record) throws IOException{
         GroupChatMessage groupChatMessage = record.value();
         groupChatMessage.setCreateDate(new Date());
         GroupChatMessageEntity entity = new GroupChatMessageEntity(groupChatMessage);
         groupChatMessageRepository.save(entity);
+    }
+
+    @KafkaListener(topics = "group-chat-message-delete-topic", groupId = "group-json")
+    public void deleteGroupChatMessage(ConsumerRecord<Long, GroupChatMessage> record) throws IOException {
+        groupChatMessageRepository.deleteById(record.value().getId());
     }
 }

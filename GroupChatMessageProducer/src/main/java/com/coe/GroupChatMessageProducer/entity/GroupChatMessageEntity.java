@@ -1,29 +1,52 @@
-package com.coe.GroupChatMessageProducer.model;
+package com.coe.GroupChatMessageProducer.entity;
 
-import com.coe.GroupChatMessageProducer.entity.GroupChatAdmin;
-import com.coe.GroupChatMessageProducer.entity.GroupChatMessageEntity;
-import java.io.Serializable;
+import com.coe.GroupChatMessageProducer.model.GroupChatMessage;
+
+import javax.persistence.*;
 import java.util.Date;
 
-public class GroupChatMessage implements Serializable {
+
+@Entity
+@Table(name="group_chat_message")
+public class GroupChatMessageEntity {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+
+    //Parte de manuel cuidado.
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name="group_chat_admin_id", referencedColumnName = "id", nullable = false)
+    @Column(name="group_chat_admin_id")
     private int groupChatAdminId;
+
+    @OneToOne
+    @JoinColumn(name = "chat_message_fk", referencedColumnName = "id")
     private GroupChatMessageEntity GroupChatMessageId;
+
+    @Column(name = "content", nullable = false)
     private String content;
+
+    @Column(name = "create_date", nullable = false)
     private Date createDate;
+
+    @Column(name = "status")
     private String status;
 
-    public GroupChatMessage() {
+
+    public GroupChatMessageEntity() {
+    }
+    public GroupChatMessageEntity(GroupChatMessage groupChatMessage) {
+        //this.id = groupChatMessage.getId();
+        //this.groupChatAdminId = groupChatMessage.getAdmin
+        //this.ChatMessageFk = this; //Buscar como declarar
+        //this.content = groupChatMessage.getContent();
+        //this.createDate = groupChatMessage.getCreateDate();
+        //this.status = S.Sent; //Buscar como declarar
     }
 
-    public GroupChatMessage(GroupChatMessageEntity entity) {
-        this.id = entity.getId();
-        this.GroupChatMessageId = entity.getGroupChatMessageId();
-        this.groupChatAdminId = entity.getGroupChatAdminId();
-        this.content = entity.getContent();
-        this.createDate = entity.getCreateDate();
-        this.status = entity.getStatus();
-    }
+
 
     public int getId() {
         return id;
@@ -75,7 +98,7 @@ public class GroupChatMessage implements Serializable {
 
     @Override
     public String toString() {
-        return "GroupChatMessage{" +
+        return "GroupChatMessageEntity{" +
                 "id=" + id +
                 ", groupChatAdminId=" + groupChatAdminId +
                 ", GroupChatMessageId=" + GroupChatMessageId +
@@ -83,5 +106,9 @@ public class GroupChatMessage implements Serializable {
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public void updateEntity (GroupChatMessage groupChatMessage) {
+        this.content = groupChatMessage.getContent();
     }
 }

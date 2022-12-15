@@ -9,6 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 public class GroupChatMessageApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(GroupChatMessageApplication.class, args);
 	}
 

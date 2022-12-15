@@ -1,8 +1,6 @@
-package com.coe.kafkaproducer.model;
+package com.coe.GroupChatMessage.model;
 
-import com.coe.GroupChatMessage.entity.GroupChatAdmin;
-import com.coe.GroupChatMessage.entity.GroupChatMessageEntity;
-
+import com.coe.GroupChatMessageProducer.entity.GroupChatMessageEntity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +8,7 @@ import java.util.Date;
 public class GroupChatMessage implements Serializable {
     private int id;
     private int groupChatAdminId;
-    private GroupChatMessageEntity groupChatMessageId;
+    private GroupChatMessageEntity GroupChatMessageId;
     private String content;
     private Date createDate;
     private String status;
@@ -18,11 +16,11 @@ public class GroupChatMessage implements Serializable {
     public GroupChatMessage() {
     }
 
-    public GroupChatMessage(GroupChatMessageEntity entity){
+    public GroupChatMessage(GroupChatMessageEntity entity) {
         this.id = entity.getId();
-        this.groupChatMessageId = entity.getGroupChatMessageId();
+        this.GroupChatMessageId = entity.getGroupChatMessageId();
         this.groupChatAdminId = entity.getGroupChatAdminId();
-        this.content =entity.getContent();
+        this.content = entity.getContent();
         this.createDate = entity.getCreateDate();
         this.status = entity.getStatus();
     }
@@ -44,11 +42,11 @@ public class GroupChatMessage implements Serializable {
     }
 
     public GroupChatMessageEntity getGroupChatMessageId() {
-        return groupChatMessageId;
+        return GroupChatMessageId;
     }
 
     public void setGroupChatMessageId(GroupChatMessageEntity groupChatMessageId) {
-        this.groupChatMessageId = groupChatMessageId;
+        GroupChatMessageId = groupChatMessageId;
     }
 
     public String getContent() {
@@ -80,7 +78,7 @@ public class GroupChatMessage implements Serializable {
         return "GroupChatMessage{" +
                 "id=" + id +
                 ", groupChatAdminId=" + groupChatAdminId +
-                ", groupChatMessageId=" + groupChatMessageId +
+                ", GroupChatMessageId=" + GroupChatMessageId +
                 ", content='" + content + '\'' +
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +

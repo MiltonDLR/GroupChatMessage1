@@ -1,4 +1,4 @@
-package com.coe.GroupChatMessageProducer.model;
+package com.coe.GroupChatMessageProducer.entity;
 
 public class GroupChatAdmin {
     private int id;

@@ -6,32 +6,24 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/GroupChatMessage")
+@RequestMapping("group-chat-message/produce")
 public class KafkaController {
 
     @Autowired
     private KafkaTemplate<String, GroupChatMessage> kafkaEntityTemplate;
 
     @Autowired
-    private KafkaTemplate<String, Integer> kafkaGroupChatAdminIdTemplate;
+    private KafkaTemplate<String, Integer> kafkaIdGroupChatMessageTemplate;
 
-
-//    @GetMapping("/produce/{name}")
-//    public String myMessage(@PathVariable("name") final String name){
-//        GroupChatMessageDTO groupChatMessageDTO = new GroupChatMessageDTO(); //Crea el objeto del json
-//        groupChatMessageDTO.setContent(name);
-//        kafkaEntityTemplate.send("GroupChatMessageDTO", groupChatMessageDTO);
-//        return "Message Published Successfully";
-//    }
-
-    //Instead PathVariable = @RequestBody
     @PostMapping("")
-    public String saveGroupMessage(@RequestBody GroupChatMessage groupChatMessage){
-        //Si tienes que cambiar algun dato de tu objeto, hacerlo antes del send(enviar)
-        kafkaEntityTemplate.send("save_group_message", groupChatMessage);
-        return "Group Message published successfully";
+    public String saveGroupChatMessage(@RequestBody GroupChatMessage groupChatMessage){
+        kafkaEntityTemplate.send("group-chat-message-save-topic", groupChatMessage);
+        return "Group Chat Message saved successfully";
     }
 
-
-
+    @DeleteMapping("/{idGroupChatMessage}")
+    public String deleteGroupChatMessage(@PathVariable("idGroupChatMessage") int idGroupChatMessage){
+        kafkaIdGroupChatMessageTemplate.send("group-chat-message-delete-topic", idGroupChatMessage);
+        return "Group chat message deleted successfully";
+    }
 }
