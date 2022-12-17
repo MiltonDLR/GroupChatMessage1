@@ -1,6 +1,6 @@
 package com.coe.GroupChatMessage.entity;
 
-import com.coe.kafkaproducer.model.GroupChatMessage;
+import com.coe.GroupChatMessage.kafkaproducer.model.GroupChatMessage;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +14,8 @@ public class GroupChatMessageEntity {
     private int id;
 
     //@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="group_chat_admin_id")//, referencedColumnName = "id")
+    //@JoinColumn(name="group_chat_admin_id")//, referencedColumnName = "id")
+    @Column(name="group_chat_admin_id")
     private int groupChatAdminId;
 
     @OneToOne
@@ -28,7 +29,6 @@ public class GroupChatMessageEntity {
     private Date createDate;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING)
     private String status;
 
     public GroupChatMessageEntity() {
@@ -94,17 +94,6 @@ public class GroupChatMessageEntity {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "GroupChatMessageEntity{" +
-                "id=" + id +
-                ", groupChatAdminId=" + groupChatAdminId +
-                ", groupChatMessageId=" + groupChatMessageId +
-                ", content='" + content + '\'' +
-                ", createDate=" + createDate +
-                ", status='" + status + '\'' +
-                '}';
-    }
 
     public void updateEntity(GroupChatMessage groupChatMessage){
         this.content = groupChatMessage.getContent();

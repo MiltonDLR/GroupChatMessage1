@@ -21,9 +21,8 @@ package com.coe.GroupChatMessage.entity;
         @Column(name = "email", nullable = false)
         private String email;
 
-        @Enumerated(EnumType.ORDINAL)
         @Column(name = "status")
-        private CustomerStatus status;
+        private String status;
 
         @Column(name = "create_date", nullable = false)
         private Date createDate;
@@ -73,11 +72,11 @@ package com.coe.GroupChatMessage.entity;
             this.email = email;
         }
 
-        public CustomerStatus getStatus() {
+        public String getStatus() {
             return status;
         }
 
-        public void setStatus(CustomerStatus status) {
+        public void setStatus(String status) {
             this.status = status;
         }
 
@@ -96,8 +95,4 @@ package com.coe.GroupChatMessage.entity;
         public void setLastTimeOnline(Date lastTimeOnline) {
             this.lastTimeOnline = lastTimeOnline;
         }
-    }
-
-    enum CustomerStatus {
-        ONLINE, OFFLINE
     }

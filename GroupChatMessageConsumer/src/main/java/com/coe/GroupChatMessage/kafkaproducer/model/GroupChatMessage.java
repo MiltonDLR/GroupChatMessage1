@@ -1,6 +1,5 @@
-package com.coe.kafkaproducer.model;
+package com.coe.GroupChatMessage.kafkaproducer.model;
 
-import com.coe.GroupChatMessage.entity.GroupChatAdmin;
 import com.coe.GroupChatMessage.entity.GroupChatMessageEntity;
 
 

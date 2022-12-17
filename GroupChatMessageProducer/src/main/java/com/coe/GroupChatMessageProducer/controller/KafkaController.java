@@ -6,14 +6,18 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("group-chat-message/produce")
+@RequestMapping("/group_chat_message/produce")
 public class KafkaController {
 
-    @Autowired
-    private KafkaTemplate<String, GroupChatMessage> kafkaEntityTemplate;
+    private final KafkaTemplate<String, GroupChatMessage> kafkaEntityTemplate;
+
+    private final KafkaTemplate<String, Integer> kafkaIdGroupChatMessageTemplate;
 
     @Autowired
-    private KafkaTemplate<String, Integer> kafkaIdGroupChatMessageTemplate;
+    public KafkaController(KafkaTemplate<String, GroupChatMessage> kafkaEntityTemplate, KafkaTemplate<String, Integer> kafkaIdGroupChatMessageTemplate) {
+        this.kafkaEntityTemplate = kafkaEntityTemplate;
+        this.kafkaIdGroupChatMessageTemplate = kafkaIdGroupChatMessageTemplate;
+    }
 
     @PostMapping("")
     public String saveGroupChatMessage(@RequestBody GroupChatMessage groupChatMessage){
@@ -21,9 +25,27 @@ public class KafkaController {
         return "Group Chat Message saved successfully";
     }
 
+    @PutMapping("")
+    public String editGroupChatMessage(@RequestBody GroupChatMessage groupChatMessage) {
+        if(groupChatMessage.getId() <= 0)
+            return "Group Chat Message Id cannot be null or 0";
+        kafkaEntityTemplate.send("group-chat-message-update-topic", groupChatMessage);
+        return "GroupChatMessage upload published successfully";
+    }
+
     @DeleteMapping("/{idGroupChatMessage}")
     public String deleteGroupChatMessage(@PathVariable("idGroupChatMessage") int idGroupChatMessage){
         kafkaIdGroupChatMessageTemplate.send("group-chat-message-delete-topic", idGroupChatMessage);
-        return "Group chat message deleted successfully";
+        return "Group Chat Message deleted successfully";
     }
+
+    @PutMapping("/status/{idGroupChatMessage}/{status}")
+    public String statusGroupChatMessage(@PathVariable("idGroupChatMessage") int idGroupChatMessage, @PathVariable("status") String status){
+        GroupChatMessage aux = new GroupChatMessage();
+        aux.setStatus(status.toUpperCase());
+        aux.setId(idGroupChatMessage);
+        kafkaEntityTemplate.send("group-chat-message-status-topic", aux);
+        return "Group Chat Message status published successfully";
+    }
+
 }
